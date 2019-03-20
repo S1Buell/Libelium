@@ -1,0 +1,120 @@
+//Hydrolab (Waspmote 1.2)
+
+//Always awake send Bettery info every 30min
+// Coded created by Alex, Tom and Gabriel Mar 13 2019
+// Alex Calegari Fracaroli C0479831@vale.com
+// Tom Massicotte Tom.massicotte@vale.com
+// Gabriel Fraga C0603067@vale.com
+
+//Code Check List for install
+// Area #1.0 Set Pan ID
+// Area #2.0 Set MAC ID
+// Area #3.0 Set Waspmote ID
+// Area #4.0 Set Channel
+// Area #5.0 Set Preamble
+// Area #6.0 Set Encryption On/Off
+// Area #7.0 Set Encrypton Key
+// Area #8.0 Set Network Retries
+// Area #9.0 Set Radio Power Output
+// Area #10.0 Sync Time to Gateway
+// Area #11.0 Set Router Bettery packet Send Time
+
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Area A # Set Global Variables  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+// Libraries
+#include <WaspXBee900HP.h>
+#include <WaspFrame.h>
+#include <Wasp485.h>
+//#include <ModbusMaster.h>
+#include <ModbusMaster485.h>
+
+// ===========================================================================
+// Instantiate ModbusMaster object as slave ID 1
+//ModbusMaster485 node(RS485_COM, 1);
+ModbusMaster485 node(1);
+// Define one address for reading, extracted from the datasheet
+#define address 1
+// Ph Value
+char phString[10];
+float pH;
+bool scanSensor = false; 
+
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Area B # Setup  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+void setup()
+{
+  // Power on the USB for viewing data in the serial monitor
+  USB.ON();
+  
+  // Initialize Modbus communication baud rate
+  node.begin(9600);
+  USB.println("Modbus communication over RS-485 - Water Quality (Hydrolab)");
+  delay(100);
+ 
+  //END Setup LOOP =============================================================
+
+}
+
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Area C # Main Loop  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+void loop()
+{
+  // ===========================================================================
+  // Create struct to read Modbus registers
+  union
+  {
+    unsigned int i[2];
+    float f;
+  } foo;
+
+  uint8_t counter = 0;
+  
+  // This variable will store the result of the communication
+  // result = 0 : no errors 
+  // result = 1 : error occurred  
+  int result =  node.readInputRegisters(40001, 2);
+
+  while (!scanSensor) {
+    //If no response from the slave, print an error message.
+    result = node.readHoldingRegisters(40001, 2);
+    scanSensor = (result == 0);
+    counter++;
+    if(counter>3)  USB.println(" Communication Error -  Verifique o cabeamento ");
+    }
+
+  // ================================================================================
+  // For float point variables
+  delay(100);
+  USB.println("");
+ 
+  if (scanSensor)
+  {
+    result = node.readHoldingRegisters(40001, 2);
+    if (result == 0)
+    {
+      USB.print("pH: ");
+      foo.i[0] = node.getResponseBuffer(1);
+      foo.i[1] = node.getResponseBuffer(0);
+      USB.println(foo.f);
+      pH = foo.f;
+      Utils.float2String(pH, phString, 3);
+    }
+    else
+    {
+      USB.println("Communication error PH:");
+      USB.println(result);
+    }
+    delay(500);
+  }
+
+  USB.println("\n====================================== \n");
+
+  // Clear the response buffer 
+  node.clearResponseBuffer();
+}

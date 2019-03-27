@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="LoRaDevUtility.jnlp">
+  <information>
+    <title>LoRaDevUtility</title>
+    <vendor>C16188</vendor>
+    <description>LoRa Development Utility</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <jfx:javafx-runtime version="2.2+" href="http://javadl.sun.com/webapps/download/GetFile/javafx-latest/windows-i586/javafx2.jnlp"/>
+  </resources>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="LoRaDevUtility.jar" size="1025794" download="eager" />
+    <jar href="lib/Helper.jar" size="2859" download="eager" />
+    <jar href="lib/I2CBootloaderHost.jar" size="160996" download="eager" />
+    <jar href="lib/IntelHEX.jar" size="14391" download="eager" />
+    <jar href="lib/JavaTrigger.jar" size="8012" download="eager" />
+    <jar href="lib/MCU8CommsConcrete.jar" size="21979" download="eager" />
+    <jar href="lib/MCU8CommsCore.jar" size="67784" download="eager" />
+    <jar href="lib/RXTXcomm.jar" size="59464" download="eager" />
+    <jar href="lib/appframework-1.0.3.jar" size="318588" download="eager" />
+    <jar href="lib/com-microchip-mplab-comm.jar" size="298667" download="eager" />
+    <jar href="lib/com-microchip-mplab-logger.jar" size="8310" download="eager" />
+    <jar href="lib/com-microchip-mplab-open-util-pathretrieval.jar" size="3840" download="eager" />
+    <jar href="lib/com-microchip-mplab-open-util.jar" size="4342" download="eager" />
+    <jar href="lib/com-microchip-mplab-util-observers.jar" size="5712" download="eager" />
+    <jar href="lib/jssc.jar" size="153562" download="eager" />
+    <jar href="lib/mysql-connector-java-5.1.23-bin.jar" size="827921" download="eager" />
+    <jar href="lib/org-openide-util-lookup.jar" size="297006" download="eager" />
+    <jar href="lib/swing-worker-1.1.jar" size="12591" download="eager" />
+  </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="LoRaDevUtility" >
+    <param name="requiredFXVersion" value="2.2+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="lora.LoRa"  name="LoRaDevUtility" />
+  <update check="always"/>
+</jnlp>

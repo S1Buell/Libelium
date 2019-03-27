@@ -1,0 +1,22 @@
+ build/default/production/_ext/621139541/usb_device_cdc.d  \
+ build/default/production/_ext/621139541/usb_device_cdc.p1:  \
+ ../../Microchip/microchip/mla/v2017_03_06/framework/usb/src/usb_device_cdc.c  \
+../../Microchip/microchip/mla/v2017_03_06/framework/usb/inc/usb_common.h  \
+./AD.h  \
+./Configuration.h  \
+./Pulses.h  \
+./uart/uart.h  \
+./frame.h  \
+../../Microchip/microchip/mla/v2017_03_06/framework/usb/inc/usb_ch9.h  \
+../../Microchip/microchip/mla/v2017_03_06/framework/usb/inc/usb_hal_pic18.h  \
+./UT.h  \
+../../Microchip/microchip/mla/v2017_03_06/framework/usb/inc/usb_device.h  \
+./EEPROM.h  \
+usb/system.h  \
+./LoRaWanCore.h  \
+../../Microchip/microchip/mla/v2017_03_06/framework/usb/inc/usb_device_cdc.h  \
+usb/usb_config.h  \
+./timer.h  \
+../../Microchip/microchip/mla/v2017_03_06/framework/usb/inc/usb_hal.h  \
+../../Microchip/microchip/mla/v2017_03_06/framework/usb/inc/usb.h  \
+./XBeeCore.h 
